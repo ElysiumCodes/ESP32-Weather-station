@@ -1,16 +1,17 @@
-#define PIN 2  // The pin connected to the button
-#define POUT 17
-void setup() {
-    pinMode(PIN, OUTPUT);
-    pinMode(POUT, INPUT);
-    Serial.begin(115200);  
-    digitalWrite(PIN, HIGH);       // Initialize serial communication
+#define PIN 2
+#define POUT 5
+void setup(){
+pinMode(PIN, INPUT);
+pinMode(POUT, OUTPUT);
+Serial.begin(115200);
 }
 
-void loop() {
-     // Read the state of the button
-    int state= digitalRead(POUT);
-    if (state == HIGH) {            // If the button is pressed
-        Serial.println("Button Pressed!");  // Print message to serial monitor
-    }
+void loop(){
+  int state=digitalRead(PIN);
+  if(state==HIGH){
+    digitalWrite(POUT,HIGH);
+    Serial.print("Pressed");
+    delay(1000);
+    digitalWrite(POUT,LOW);
+  }
 }
