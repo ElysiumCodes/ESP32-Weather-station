@@ -1,40 +1,38 @@
 #include "DHT.h"
-#define DHTPIN 4     
-#define DHTTYPE DHT22   
-DHT dht(DHTPIN, DHTTYPE);
+
+#define DHTPIN 2
+#define DHTTYPE DHT11
+//DHTTYPE = DHT11, but there are also DHT22 and 21
+
+DHT dht(DHTPIN, DHTTYPE); // constructor to declare our sensor
 
 void setup() {
-  Serial.begin(9600);
-  Serial.println(F("DHTxx test!"));
-
+  Serial.begin(9600 );
   dht.begin();
 }
 
 void loop() {
- 
-  delay(2000);
-
+  delay(1000);
+  // The DHT11 returns at most one measurement every 1s
   float h = dht.readHumidity();
+  //Read the moisture content in %.
   float t = dht.readTemperature();
+  //Read the temperature in degrees Celsius
   float f = dht.readTemperature(true);
+  // true returns the temperature in Fahrenheit
+
   if (isnan(h) || isnan(t) || isnan(f)) {
-    Serial.println(F("Failed to read from DHT sensor!"));
+    Serial.println("Failed reception");
     return;
+    //Returns an error if the ESP32 does not receive any measurements
   }
 
-  float hif = dht.computeHeatIndex(f, h);
-
-  float hic = dht.computeHeatIndex(t, h, false);
-
-  Serial.print(F("Humidity: "));
+  Serial.print("Humidite: ");
   Serial.print(h);
-  Serial.print(F("%  Temperature: "));
+  Serial.print("%  Temperature: ");
   Serial.print(t);
-  Serial.print(F("°C "));
+  Serial.print("°C, ");
   Serial.print(f);
-  Serial.print(F("°F  Heat index: "));
-  Serial.print(hic);
-  Serial.print(F("°C "));
-  Serial.print(hif);
-  Serial.println(F("°F"));
+  Serial.println("°F");
+  // Transmits the measurements received in the serial monitor
 }
